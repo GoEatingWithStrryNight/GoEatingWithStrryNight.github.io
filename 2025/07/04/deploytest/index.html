@@ -19,7 +19,7 @@
     <meta name="keywords" content="blog, hexo">
 
 
-<title>Hexo-Use | Heby</title>
+<title>Deploy-Test | Heby</title>
 
 
 
@@ -46,45 +46,6 @@
 
     
     
-        
-            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-    "HTML-CSS": {
-        preferredFont: "TeX",
-        availableFonts: ["STIX","TeX"],
-        linebreaks: { automatic:true },
-        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
-    },
-    tex2jax: {
-        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
-        processEscapes: true,
-        ignoreClass: "tex2jax_ignore|dno",
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-        equationNumbers: { autoNumber: "AMS" },
-        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
-        Macros: { href: "{}" }
-    },
-    messageStyle: "none"
-    });
-</script>
-<!-- 给MathJax元素添加has-jax class -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<!-- 通过连接CDN加载MathJax的js代码 -->
-<script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-
         
     
 
@@ -248,7 +209,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Hexo-Use</h1>
+            <h1 class="post-title">Deploy-Test</h1>
             
                 <div class="post-meta">
                     
@@ -257,7 +218,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 3, 2025&nbsp;&nbsp;19:39:37</a>
+                        Date: <a href="#">July 4, 2025&nbsp;&nbsp;19:59:52</a>
                         </span>
                     
                     
@@ -273,18 +234,14 @@
         </header>
 
         <div class="post-content">
-            <h2 id="关于-Hexo"><a href="#关于-Hexo" class="headerlink" title="关于 Hexo"></a>关于 Hexo</h2><p>Hexo 是一个快速、简洁且高效的博客框架。它基于 Node.js，支持 Markdown 语法，可以快速生成静态网站。<br>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Hello, Hexo!&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="测试标题"><a href="#测试标题" class="headerlink" title="测试标题"></a>测试标题</h2><p>这是一个测试段落，用于验证博客的部署是否成功。</p>
+<h3 id="测试列表"><a href="#测试列表" class="headerlink" title="测试列表"></a>测试列表</h3><ul>
+<li>项目一</li>
+<li>项目二</li>
+<li>项目三</li>
+</ul>
+<h3 id="测试代码块"><a href="#测试代码块" class="headerlink" title="测试代码块"></a>测试代码块</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello, world!&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<h2 id="使用-MathJax"><a href="#使用-MathJax" class="headerlink" title="使用 MathJax"></a>使用 MathJax</h2><p>$$<br>E &#x3D; mc^2<br>$$</p>
 
         </div>
 
@@ -299,7 +256,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://goeatingwithstrrynight.github.io/2025/07/03/My-New-Post/">https://goeatingwithstrrynight.github.io/2025/07/03/My-New-Post/</a></span>
+                        <span><a href="https://goeatingwithstrrynight.github.io/2025/07/04/deploytest/">https://goeatingwithstrrynight.github.io/2025/07/04/deploytest/</a></span>
                     </p>
                 
                 
@@ -327,7 +284,7 @@
                     
                         <a href="/tags/blog/"># blog</a>
                     
-                        <a href="/tags/markdown/"># markdown</a>
+                        <a href="/tags/deploy/"># deploy</a>
                     
                         
                 </span>
@@ -340,8 +297,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2025/07/04/deploytest/">Deploy-Test</a>
             
+            <a class="next" rel="next" href="/2025/07/03/My-New-Post/">Hexo-Use</a>
             
         </section>
 
