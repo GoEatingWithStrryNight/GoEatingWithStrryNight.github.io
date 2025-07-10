@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Heby">
+
+
+    <meta name="subtitle" content="subtitle">
+
+
+    <meta name="description" content="description">
+
+
+    <meta name="keywords" content="blog, hexo">
+
+
+<title>区间问题 | Heby</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Heby&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Heby&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">区间问题</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Heby</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 10, 2025&nbsp;&nbsp;0:32:29</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83/">贪心</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/908/">题目链接</a></p>
+<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定 N 个闭区间 [ai, bi]，要求将这些区间分成若干组，使得每组内部的区间两两之间（包括端点）没有交集，并且组数尽可能小。输出最小组数。<br><strong>输入格式</strong><br>第一行：整数 N（区间数量）<br>随后 N 行：每行两个整数 ai, bi（区间端点）  </p>
+<p><strong>输出格式</strong><br>一个整数（最小组数）  </p>
+<p><strong>数据范围</strong><br>1≤N≤10⁵, -10⁹≤ai≤bi≤10⁹  </p>
+<p><strong>输入样例</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">-1 1</span><br><span class="line">2 4</span><br><span class="line">3 5</span><br></pre></td></tr></table></figure>
+<p><strong>输出样例</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><p>核心目标：<strong>最小化分组数</strong>，同时保证每组内区间互不重叠（端点也不重合）<br>关键策略：  </p>
+<ol>
+<li><strong>贪心思想</strong>：按<strong>左端点</strong>升序排序区间，依次处理每个区间<br><strong>贪心策略分析：</strong> 为什么要按照左端点排序？  <ul>
+<li>这样可以确保每次处理的区间都是当前未分组区间中最早开始的，可以“充分”利用空间</li>
+<li>图示：<img src="/images/%E5%8C%BA%E9%97%B4%E5%88%86%E7%BB%84_1.jpg" alt="image.png"></li>
+</ul>
+</li>
+<li><strong>动态分组</strong>：维护当前所有分组的最小右端点值，新区间只需与最小右端点比较  </li>
+<li><strong>决策规则</strong>：  <ul>
+<li>若新区间左端点 &gt; 最小右端点 → 可加入该组（更新该组右端点）  </li>
+<li>否则 → 必须创建新组</li>
+</ul>
+</li>
+</ol>
+<h3 id="优化部分"><a href="#优化部分" class="headerlink" title="优化部分"></a>优化部分</h3><p><strong>一开始的初始低效方案</strong>：  </p>
+<ul>
+<li>用数组存储每组最小右端点  </li>
+<li>每次遍历所有分组查找最小右端点  </li>
+<li>时间复杂度：O(n²)（10⁵数据超时）</li>
+</ul>
+<p><strong>堆优化方案</strong>：  </p>
+<ol>
+<li><strong>数据结构替换</strong>：最小堆（小根堆）替代数组  <ul>
+<li>堆顶始终是当前最小右端点</li>
+</ul>
+</li>
+<li><strong>操作优化</strong>：  <ul>
+<li>查找最小右端点：O(1)  </li>
+<li>更新&#x2F;添加分组：O(log k)（k为当前组数）</li>
+</ul>
+</li>
+<li><strong>复杂度分析</strong>：  <ul>
+<li>排序：O(n log n)  </li>
+<li>堆操作：O(n log n)（每个区间最多1次入堆&#x2F;出堆）  </li>
+<li>总复杂度：O(n log n) → 完美处理10⁵规模</li>
+</ul>
+</li>
+</ol>
+<h3 id="解决代码"><a href="#解决代码" class="headerlink" title="解决代码"></a>解决代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt; pii;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;pii&gt; intervals;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> a, b;</span><br><span class="line">        cin &gt;&gt; a &gt;&gt; b;</span><br><span class="line">        intervals.<span class="built_in">push_back</span>(&#123;a, b&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 按左端点升序排序</span></span><br><span class="line">    <span class="built_in">sort</span>(intervals.<span class="built_in">begin</span>(), intervals.<span class="built_in">end</span>());</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 小根堆存储各组最大右端点</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt;&gt; min_heap;</span><br><span class="line">    min_heap.<span class="built_in">push</span>(intervals[<span class="number">0</span>].second);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> left = intervals[i].first;</span><br><span class="line">        <span class="type">int</span> right = intervals[i].second;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 可加入已有组（更新该组右端点）</span></span><br><span class="line">        <span class="keyword">if</span> (left &gt; min_heap.<span class="built_in">top</span>()) &#123;</span><br><span class="line">            min_heap.<span class="built_in">pop</span>();</span><br><span class="line">            min_heap.<span class="built_in">push</span>(right);</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="comment">// 需新建组</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            min_heap.<span class="built_in">push</span>(right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; min_heap.<span class="built_in">size</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键代码解析</strong>：  </p>
+<ol>
+<li><code>sort(intervals.begin(), intervals.end())</code>  <ul>
+<li>利用pair默认按first（左端点）排序  </li>
+<li>也可以个自定义排序cmp函数，达到需求即可</li>
+</ul>
+</li>
+<li><code>priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt;</code>  <ul>
+<li>greater<int>确保小根堆（堆顶为最小值）</li>
+</ul>
+</li>
+<li>动态更新规则：  <ul>
+<li><code>left &gt; min_heap.top()</code> → 更新组（pop旧值 + push新区间右端点）  </li>
+<li>否则 → 新建组（push新区间右端点）</li>
+</ul>
+</li>
+<li>最终堆大小即为最少组数</li>
+</ol>
+<h2 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h2><p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/description/909/">题目链接</a></p>
+<h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定 N 个区间 [ai, bi] 和一个目标区间 [s, t]。要求选择尽可能少的区间，使这些区间的并集完全覆盖目标区间 [s, t]。如果无法覆盖，输出 -1。<br>(注意这里是覆盖是实数意义上的，不是整数意义上的，也就是不能只考虑[s, t]中的整数端点是否覆盖)<br><strong>输入格式</strong><br>第一行：两个整数 s, t（目标区间端点）<br>第二行：整数 N（区间数量）<br>随后 N 行：每行两个整数 ai, bi（区间端点）  </p>
+<p><strong>输出格式</strong><br>一个整数（最少区间数）或 -1（无法覆盖时）  </p>
+<p><strong>数据范围</strong><br>1≤N≤10⁵, -10⁹≤ai≤bi≤10⁹, -10⁹≤s≤t≤10⁹  </p>
+<p><strong>输入样例</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1 5</span><br><span class="line">3</span><br><span class="line">-1 3</span><br><span class="line">2 4</span><br><span class="line">3 5</span><br></pre></td></tr></table></figure>
+<p><strong>输出样例</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决思路-1"><a href="#解决思路-1" class="headerlink" title="解决思路"></a>解决思路</h3><h4 id="贪心策略分析"><a href="#贪心策略分析" class="headerlink" title="贪心策略分析"></a>贪心策略分析</h4><p>核心目标：<strong>用最少的区间覆盖目标区间 [s, t]</strong><br>关键挑战：<strong>高效选择区间并保证覆盖连续性</strong></p>
+<ol>
+<li><p><strong>预处理阶段</strong>：</p>
+<ul>
+<li>过滤无效区间：排除所有右端点 &lt; s 的区间（无法覆盖起点）</li>
+<li>特判单点情况：若 s &#x3D;&#x3D; t，只需一个包含该点的区间</li>
+</ul>
+</li>
+<li><p><strong>排序策略</strong>：</p>
+<ul>
+<li>将区间按<strong>左端点升序排序</strong>（核心操作）</li>
+<li><strong>为什么按左端点排序？</strong><ul>
+<li>覆盖过程从左向右推进：从起点 s 开始，逐步向右扩展</li>
+<li>排序后可以保证：所有能覆盖当前点的区间被连续访问</li>
+<li>避免无效回溯：排序后只需一次线性扫描</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>贪心覆盖过程</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cur = s  // 当前已覆盖的右边界</span><br><span class="line">while cur &lt; t:</span><br><span class="line">   在左端点 ≤ cur 的区间中，选择右端点最大的区间</span><br><span class="line">   更新 cur = 最大右端点</span><br><span class="line">   区间计数+1</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>关键机制</strong>：每次选择能覆盖当前点且延伸最远的区间</li>
+<li><strong>数学证明</strong>：该策略保证每次覆盖的线段最长，最终得到全局最优解</li>
+<li><strong>终止条件</strong>：<ul>
+<li>成功：cur ≥ t</li>
+<li>失败：找不到左端点 ≤ cur 的区间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>时间复杂度</strong>：</p>
+<ul>
+<li>排序：O(n log n)</li>
+<li>扫描覆盖：O(n)（每个区间仅访问一次）</li>
+<li>总复杂度：O(n log n) → 高效处理 10⁵ 规模</li>
+</ul>
+</li>
+</ol>
+<h3 id="解决代码-1"><a href="#解决代码-1" class="headerlink" title="解决代码"></a>解决代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Interval</span> &#123;</span><br><span class="line">    LL a, b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(Interval x, Interval y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x.a &lt; y.a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    LL s, t;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; s &gt;&gt; t;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    </span><br><span class="line">    vector&lt;Interval&gt; intervals;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        LL a, b;</span><br><span class="line">        cin &gt;&gt; a &gt;&gt; b;</span><br><span class="line">        <span class="keyword">if</span> (b &gt;= s) &#123;</span><br><span class="line">            intervals.<span class="built_in">push_back</span>(&#123;a, b&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 特判：目标区间为单点</span></span><br><span class="line">    <span class="keyword">if</span> (s == t) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; interval : intervals) &#123;</span><br><span class="line">            <span class="keyword">if</span> (interval.a &lt;= s &amp;&amp; interval.b &gt;= s) &#123;</span><br><span class="line">                cout &lt;&lt; <span class="number">1</span> &lt;&lt; endl;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cout &lt;&lt; <span class="number">-1</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    n = intervals.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">sort</span>(intervals.<span class="built_in">begin</span>(), intervals.<span class="built_in">end</span>(), cmp);</span><br><span class="line">    </span><br><span class="line">    LL cur = s;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="type">bool</span> success = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (cur &lt; t) &#123;</span><br><span class="line">        LL max_extension = cur;  <span class="comment">// 当前能扩展的最大右边界</span></span><br><span class="line">        <span class="type">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 扫描所有能覆盖当前点的区间</span></span><br><span class="line">        <span class="keyword">while</span> (i &lt; n &amp;&amp; intervals[i].a &lt;= cur) &#123;</span><br><span class="line">            <span class="keyword">if</span> (intervals[i].b &gt; max_extension) &#123;</span><br><span class="line">                max_extension = intervals[i].b;</span><br><span class="line">                found = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!found) <span class="keyword">break</span>;  <span class="comment">// 无法继续扩展</span></span><br><span class="line">        </span><br><span class="line">        count++;</span><br><span class="line">        cur = max_extension;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (cur &gt;= t) &#123;</span><br><span class="line">            success = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; (cur &gt;= t ? count : <span class="number">-1</span>) &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>代码关键点解析</strong>：</p>
+<ol>
+<li><p><strong>预处理优化</strong>（第24-26行）：</p>
+<ul>
+<li>提前过滤右端点 &lt; s 的区间，减少后续处理量</li>
+</ul>
+</li>
+<li><p><strong>单点特判</strong>（第29-38行）：</p>
+<ul>
+<li>处理 s &#x3D;&#x3D; t 的特殊情况，只需检查是否存在包含点 s 的区间</li>
+</ul>
+</li>
+<li><p><strong>贪心核心循环</strong>（第45-62行）：</p>
+<ul>
+<li><code>cur</code>：当前已覆盖的最右位置（初始化为 s）</li>
+<li>内层循环：扫描所有左端点 ≤ cur 的区间，记录最大右端点</li>
+<li>更新策略：找到最大延伸区间后，<code>cur = max_extension</code>，区间计数+1</li>
+</ul>
+</li>
+<li><p><strong>提前终止</strong>（第58行）：</p>
+<ul>
+<li>当 <code>cur ≥ t</code> 时立即终止，避免无效扫描</li>
+</ul>
+</li>
+<li><p><strong>失败处理</strong>（第65行）：</p>
+<ul>
+<li>最终 <code>cur &lt; t</code> 说明覆盖失败，输出 -1</li>
+</ul>
+</li>
+</ol>
+<h2 id="区间问题解决思路"><a href="#区间问题解决思路" class="headerlink" title="区间问题解决思路"></a>区间问题解决思路</h2><h3 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h3><ol>
+<li><strong>排序预处理</strong>：区间问题通常先按<strong>左或者右端点升序排序</strong></li>
+<li><strong>贪心策略</strong>：从左向右扫描区间，根据问题特性设计局部最优策略</li>
+<li><strong>动态维护</strong>：在扫描过程中维护关键值（如当前覆盖位置、最小右端点等）</li>
+</ol>
+<h3 id="关键问题特征与策略选择"><a href="#关键问题特征与策略选择" class="headerlink" title="关键问题特征与策略选择"></a>关键问题特征与策略选择</h3><table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>核心目标</th>
+<th>排序依据</th>
+<th>贪心策略</th>
+<th>数据结构优化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>区间分组</strong></td>
+<td>最小化组数</td>
+<td>左端点</td>
+<td>与最早结束组比较</td>
+<td>最小堆维护结束端点</td>
+</tr>
+<tr>
+<td><strong>区间覆盖</strong></td>
+<td>最小区间数覆盖目标</td>
+<td>左端点</td>
+<td>选择能覆盖当前点且最远区间</td>
+<td>无（线性扫描）</td>
+</tr>
+<tr>
+<td><strong>区间选点</strong></td>
+<td>最少的点覆盖所有区间</td>
+<td>右端点</td>
+<td>在最早结束区间右端点放点</td>
+<td>无</td>
+</tr>
+<tr>
+<td><strong>最大不相交</strong></td>
+<td>选择最多不相交区间</td>
+<td>右端点</td>
+<td>优先选择结束最早的区间</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/907/">区间选点</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/910/">最大不相交</a></li>
+</ul>
+<h3 id="通用解题框架"><a href="#通用解题框架" class="headerlink" title="通用解题框架"></a>通用解题框架</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">solve_interval_problem</span>(<span class="params">intervals</span>):</span><br><span class="line">    <span class="comment"># 1. 排序预处理</span></span><br><span class="line">    sort(intervals)  </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 初始化关键变量</span></span><br><span class="line">    key_value = initial_value  </span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 扫描区间</span></span><br><span class="line">    <span class="keyword">for</span> interval <span class="keyword">in</span> intervals:</span><br><span class="line">        <span class="comment"># 4. 根据问题类型更新状态</span></span><br><span class="line">        <span class="keyword">if</span> 满足特定条件:</span><br><span class="line">            更新key_value</span><br><span class="line">            result += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            调整key_value</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 5. 处理边界情况</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<h3 id="核心洞察"><a href="#核心洞察" class="headerlink" title="核心洞察"></a>核心洞察</h3><ol>
+<li><p><strong>排序目的</strong>：</p>
+<ul>
+<li>左端点排序：适用于需要从左向右顺序处理的场景</li>
+<li>右端点排序：适用于关注区间结束时间的场景</li>
+</ul>
+</li>
+<li><p><strong>贪心正确性证明</strong>：</p>
+<ul>
+<li>交换论证法：证明任何非贪心选择可通过调整得到更优解</li>
+<li>数学归纳法：证明第k步选择总是最优解的一部分</li>
+</ul>
+</li>
+<li><p><strong>复杂度优化关键</strong>：</p>
+<ul>
+<li>避免O(n²)扫描：使用堆等数据结构维护极值</li>
+<li>减少重复计算：利用排序后的单调性进行指针跳跃</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>本质规律</strong>：区间问题的核心在于处理<strong>覆盖关系</strong>和<strong>端点关系</strong>，排序能将复杂关系转化为线性可处理问题，贪心策略则利用局部最优性简化决策过程。</p>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Heby</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://goeatingwithstrrynight.github.io/2025/07/10/%E5%8C%BA%E9%97%B4%E9%97%AE%E9%A2%98/">https://goeatingwithstrrynight.github.io/2025/07/10/%E5%8C%BA%E9%97%B4%E9%97%AE%E9%A2%98/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        <a href="/tags/%E5%8C%BA%E9%97%B4%E9%97%AE%E9%A2%98/"># 区间问题</a>
+                    
+                        <a href="/tags/%E8%B4%AA%E5%BF%83/"># 贪心</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/07/07/%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%E9%97%AE%E9%A2%98/">排列组合问题的复习总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Heby | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
