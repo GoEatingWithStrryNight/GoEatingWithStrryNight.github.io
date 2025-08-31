@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Heby">
+
+
+    <meta name="subtitle" content="subtitle">
+
+
+    <meta name="description" content="description">
+
+
+    <meta name="keywords" content="blog, hexo">
+
+
+<title>gcd_problem | Heby</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Heby&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Heby&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">gcd_problem</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Heby</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 31, 2025&nbsp;&nbsp;19:51:29</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="题目来源"><a href="#题目来源" class="headerlink" title="题目来源"></a>题目来源</h3><p><a target="_blank" rel="noopener" href="https://sim.csp.thusaac.com/contest/37/problem/3">第37次CSP第4题</a></p>
+<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定长度为 n 的数组 a。定义任意区间 [l,r] 的体育价值为：</p>
+<p>$$f([l,r]) &#x3D; l \times r \times \gcd(a_l, a_{l+1}, \dots, a_r).$$</p>
+<p>需要求：</p>
+<p>$$\sum_{l&#x3D;1}^{n} \sum_{r&#x3D;l}^{n} f([l,r]) \pmod{998244353}.$$</p>
+<p>输入：第一行 n，第二行 n 个整数 a1..an；输出：上述和的模 998244353 的结果。</p>
+<p>示例：</p>
+<ul>
+<li>输入1：n&#x3D;5, a&#x3D;[10,2,6,6,8]；输出：586</li>
+<li>输入2：n&#x3D;20, a&#x3D;[7,6,5,5,17,18,13,3,11,12,7,9,16,15,5,19,20,13,14,6]；输出：57254</li>
+</ul>
+<h3 id="解决思路-重点讲述时间复杂度的优化"><a href="#解决思路-重点讲述时间复杂度的优化" class="headerlink" title="解决思路(重点讲述时间复杂度的优化)"></a>解决思路(重点讲述时间复杂度的优化)</h3><p>朴素做法是枚举所有区间 O(n^2)，对每个区间再求 gcd，显然超时。</p>
+<p>关键观察：对固定的 r，考察所有以 r 结尾的区间 [l,r]，当 l 从 r 往左移动时，区间 gcd 会呈现“分段常数”的结构：存在若干相邻的 l 段，它们的 gcd 相同。原因是 gcd 随着区间扩张只会不增，并且每次变化都会把 gcd 变成当前 gcd 与新元素的 gcd。</p>
+<p>据此可以维护“gcd 链”（也称分段 gcd）：</p>
+<ul>
+<li>用一个按 Lbegin 递增的列表，存储若干对 (g, Lbegin)，表示从某个最左端点 Lbegin 到当前 r，这些区间的 gcd 都等于 g；不同段的 g 不同。</li>
+<li>从 r-1 过渡到 r：<ol>
+<li>新增长度为 1 的区间 [r,r]，产生一段 (a[r], r)。</li>
+<li>对上一次的每段 (g, Lbegin)，计算 newg &#x3D; gcd(g, a[r])，把 (newg, Lbegin) 依次并入。若与末段 gcd 相同则合并、保留更小的 Lbegin。</li>
+</ol>
+</li>
+</ul>
+<p>这样得到的段数均摊为 O(log A)，因为 gcd 在整数域里严格下降的次数有限，最多与值域的对数同阶。</p>
+<p>计算贡献：对当前 r 获得的段列表 nxt，设第 j 段的左端范围为 [L, R]（R 为上一段的 Lbegin-1，最前段的 R&#x3D;r），这段里所有 [l,r] 的 gcd 都为 g，则本段总贡献：</p>
+<p>$$\sum_{l&#x3D;L}^{R} l\cdot r\cdot g &#x3D; r\cdot g \cdot \sum_{l&#x3D;L}^{R} l &#x3D; r\cdot g\cdot \frac{(L+R)\cdot(R-L+1)}{2}.$$</p>
+<p>对每个 r 做一次上述“更新+求和”，总复杂度约 O(n log A)，空间 O(log A)。</p>
+<p>实现要点：</p>
+<ul>
+<li>1-based 下标，方便直接使用题面公式中的 l、r。</li>
+<li>模数 MOD&#x3D;998244353，预先计算 inv2&#x3D;(MOD+1)&#x2F;2；用等差数列求和。</li>
+<li>乘法用 128 位中间值避免溢出，或每步取模。</li>
+<li>合并段时若 gcd 相同，则只更新最小的 Lbegin，避免重复统计。</li>
+</ul>
+<h3 id="解决代码"><a href="#解决代码" class="headerlink" title="解决代码"></a>解决代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">long</span> <span class="type">long</span> MOD = <span class="number">998244353LL</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 安全乘法取模</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">long</span> <span class="type">long</span> <span class="title">mul_mod</span><span class="params">(<span class="type">long</span> <span class="type">long</span> a, <span class="type">long</span> <span class="type">long</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (<span class="type">long</span> <span class="type">long</span>)((__int128)a * b % MOD);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 安全加法取模</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">long</span> <span class="type">long</span> <span class="title">add_mod</span><span class="params">(<span class="type">long</span> <span class="type">long</span> a, <span class="type">long</span> <span class="type">long</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="type">long</span> <span class="type">long</span> s = a + b;</span><br><span class="line">	<span class="keyword">if</span> (s &gt;= MOD) s -= MOD;</span><br><span class="line">	<span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>);</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> n;</span><br><span class="line">	<span class="keyword">if</span> (!(cin &gt;&gt; n)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="function">vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; <span class="title">a</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) cin &gt;&gt; a[i];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// inv2 = (MOD + 1) / 2，因为 MOD 为奇素数</span></span><br><span class="line">	<span class="type">const</span> <span class="type">long</span> <span class="type">long</span> inv2 = (MOD + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">	<span class="type">long</span> <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// cur 维护以当前 r 结尾的 gcd 段：pair&lt;gcd, Lbegin&gt;</span></span><br><span class="line">	vector&lt;pair&lt;<span class="type">long</span> <span class="type">long</span>,<span class="type">int</span>&gt;&gt; cur, nxt;</span><br><span class="line">	cur.<span class="built_in">reserve</span>(<span class="number">64</span>);</span><br><span class="line">	nxt.<span class="built_in">reserve</span>(<span class="number">64</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> r = <span class="number">1</span>; r &lt;= n; ++r) &#123;</span><br><span class="line">		nxt.<span class="built_in">clear</span>();</span><br><span class="line">		<span class="comment">// 新增 [r, r]</span></span><br><span class="line">		nxt.<span class="built_in">emplace_back</span>(a[r], r);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 扩展之前所有段</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;p : cur) &#123;</span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> g = p.first;</span><br><span class="line">			<span class="type">int</span> Lbegin = p.second;</span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> newg = std::<span class="built_in">gcd</span>(g, a[r]);</span><br><span class="line">			<span class="keyword">if</span> (nxt.<span class="built_in">back</span>().first == newg) &#123;</span><br><span class="line">				<span class="comment">// 合并段，取更小的 Lbegin</span></span><br><span class="line">				<span class="keyword">if</span> (Lbegin &lt; nxt.<span class="built_in">back</span>().second) nxt.<span class="built_in">back</span>().second = Lbegin;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				nxt.<span class="built_in">emplace_back</span>(newg, Lbegin);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 用 nxt 计算本次 r 的贡献</span></span><br><span class="line">		<span class="comment">// 段 j 的区间是 [L..R]，其中：</span></span><br><span class="line">		<span class="comment">// L = nxt[j].second</span></span><br><span class="line">		<span class="comment">// R = (j == 0 ? r : nxt[j-1].second - 1)</span></span><br><span class="line">		<span class="type">long</span> <span class="type">long</span> r_mod = r % MOD;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">size_t</span> j = <span class="number">0</span>; j &lt; nxt.<span class="built_in">size</span>(); ++j) &#123;</span><br><span class="line">			<span class="type">int</span> L = nxt[j].second;</span><br><span class="line">			<span class="type">int</span> R = (j == <span class="number">0</span> ? r : nxt[j<span class="number">-1</span>].second - <span class="number">1</span>);</span><br><span class="line">			<span class="keyword">if</span> (L &gt; R) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> g = nxt[j].first % MOD;</span><br><span class="line"></span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> LpR = ( (<span class="type">long</span> <span class="type">long</span>)L + (<span class="type">long</span> <span class="type">long</span>)R ) % MOD;</span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> cnt = ( (<span class="type">long</span> <span class="type">long</span>)R - (<span class="type">long</span> <span class="type">long</span>)L + <span class="number">1</span> ) % MOD;</span><br><span class="line">			<span class="keyword">if</span> (cnt &lt; <span class="number">0</span>) cnt += MOD;</span><br><span class="line"></span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> sumLR = <span class="built_in">mul_mod</span>( <span class="built_in">mul_mod</span>(LpR, cnt), inv2 ); <span class="comment">// (L+R)*(R-L+1)/2 mod</span></span><br><span class="line">			<span class="type">long</span> <span class="type">long</span> contrib = <span class="built_in">mul_mod</span>( <span class="built_in">mul_mod</span>(r_mod, g), sumLR );</span><br><span class="line">			ans = <span class="built_in">add_mod</span>(ans, contrib);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		cur.<span class="built_in">swap</span>(nxt);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; ans % MOD &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码说明"><a href="#代码说明" class="headerlink" title="代码说明"></a>代码说明</h3><ul>
+<li>数据结构：<code>cur</code>&#x2F;<code>nxt</code> 保存以当前 r 结尾的“gcd 段”（pair&lt;g, Lbegin&gt;），按 Lbegin 递增。</li>
+<li>过渡：先放入 <code>[r,r]</code>，再把上一轮每段的 gcd 与 <code>a[r]</code> 求新 gcd 并入；若新 gcd 与末段相同则合并并取更小的 Lbegin。</li>
+<li>计数：第 j 段覆盖的 l 范围是 <code>[L, R]</code>，其中 <code>L = nxt[j].second</code>，<code>R = (j==0 ? r : nxt[j-1].second-1)</code>；本段贡献为 <code>r * g * sum_&#123;l=L..R&#125; l</code>，用等差数列公式一次算出。</li>
+<li>模运算：采用 128 位中间量的 <code>mul_mod</code> 防止乘法溢出；<code>inv2=(MOD+1)/2</code> 用于除以 2；所有加减乘都取模。</li>
+<li>复杂度：均摊段数 O(log A)，总时间 O(n log A)，空间 O(log A)。</li>
+</ul>
+<p>小提示：若希望自测，可用题面样例；由于使用 1-based 下标与题面一致，不需要额外偏移。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Heby</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://goeatingwithstrrynight.github.io/2025/08/31/gcd-problem/">https://goeatingwithstrrynight.github.io/2025/08/31/gcd-problem/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E6%80%A7%E8%B4%A8/"># 区间最大公约数性质</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/07/10/%E8%B4%AA%E5%BF%83%E9%97%AE%E9%A2%98/">贪心问题</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Heby | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
